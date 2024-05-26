@@ -1,9 +1,7 @@
 NAME = test
 
 SRC = ft_class.c\
-	ft_func_list.c\
-	ft_string_list.c\
-	ft_this.c\
+	ft_attributes.c\
 
 OBJ = $(SRC:.c=.o)
 

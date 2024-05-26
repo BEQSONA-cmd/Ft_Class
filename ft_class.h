@@ -16,63 +16,42 @@
 #include <string.h>
 #include <unistd.h>
 
-typedef struct s_class		t_class;
-
-typedef struct s_func_node
-{
-	void					(*func)(void);
-	struct s_func_node		*next;
-}							t_func_node;
-
-typedef struct s_string_node
-{
-	char					*str;
-	struct s_string_node	*next;
-}							t_string_node;
-
-// ft_string
-t_string_node				*create_node(char *str);
-void						free_strings(t_string_node *head);
-void						add_string(t_string_node **head, char *str);
-
-// ft_func_list
-t_func_node					*create_func_node(void (*func)(void));
-void						free_functions(t_func_node *head);
-void						add_function(t_func_node **head,
-								void (*func)(void));
-
-// ft_this
-void						this_add_string(t_class *self, char *str);
-void						this_add_function(t_class *self,
-								void (*func)(void));
+typedef struct s_class	t_class;
 
 typedef enum
 {
-	TYPE_INT,
-	TYPE_STRING,
-	TYPE_FUNCTION
-}							t_value_type;
+	INT,
+	STR,
+	FUNC
+}						t_value_type;
 
 typedef struct s_value
 {
-	t_value_type			type;
-	int						int_value;
-	char					*string_value;
-	void					(*function_value)(void *);
-}							t_value;
+	int					int_value;
+	char				*string_value;
+	void				(*function_value)(void);
+}						t_value;
 
-typedef struct
+typedef struct s_attribute
 {
-	char					*name;
-	t_value_type			type;
-	t_value					value;
-}							t_attribute;
+	char				*name;
+	t_value_type		type;
+	t_value				value;
+	struct s_attribute	*next;
+}						t_attribute;
 
 typedef struct s_class
 {
-	t_attribute				*attributes;
-	size_t					size;
-	t_string_node			*str;
-	t_func_node				*func;
-	struct s_class			*this;
-}							t_class;
+	t_attribute			*attributes;
+	size_t				size;
+	void (*attribute)(struct s_class *, char *, t_value_type, void *);
+	void *(*get_attribute)(struct s_class *, char *);
+}						t_class;
+
+void add_attribute(t_class *class, char *name, t_value_type type, void *value);
+void *get_attribute(t_class *class, char *name);
+void call_function(t_class *class, char *name);
+char *get_string(t_class *class, char *name);
+int get_int(t_class *class, char *name);
+void destroy_class(t_class *class);
+t_class *class(void);
