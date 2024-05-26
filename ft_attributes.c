@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:23:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/26 20:34:28 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:56:09 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_class	*class(void)
 	t_class	*new_class;
 
 	new_class = malloc(sizeof(t_class));
-	new_class->add_attribute = add_attribute;
+	new_class->attribute = add_attribute;
 	new_class->get_attribute = get_attribute;
 	new_class->attributes = NULL;
 	new_class->size = 0;
@@ -42,12 +42,23 @@ void	destroy_class(t_class *class)
 	free(class);
 }
 
-// for adding attributes to the class
-void	add_attribute(t_class *class, char *name, t_value_type type,
-		void *value)
+void	add_attribute(t_class *class, char *name, t_value_type type, ...)
 {
-	t_attribute	*new_attribute;
 
+	va_list		args;
+	void		*value;
+	
+	va_start(args, type);
+	if (type == STR)
+		value = va_arg(args, char *);
+	else if (type == INT)
+		value = va_arg(args, int *);
+	else if (type == FUNC || type == FUNC_WITH_ARGS)
+		value = va_arg(args, void *);
+	va_end(args);
+	
+	t_attribute	*new_attribute;
+	
 	new_attribute = malloc(sizeof(t_attribute));
 	new_attribute->name = ft_class_strdup(name);
 	new_attribute->type = type;
@@ -55,8 +66,13 @@ void	add_attribute(t_class *class, char *name, t_value_type type,
 		new_attribute->value.string_value = ft_class_strdup((char *)value);
 	else if (type == INT)
 		new_attribute->value.int_value = *(int *)value;
-	else if (type == FUNC)
-		new_attribute->value.function_value = (void (*)(void))value;
+	else if (type == FUNC || type == FUNC_WITH_ARGS)
+		{
+			if (type == FUNC)
+				new_attribute->value.function_value = value;
+			else
+				new_attribute->value.function_with_args_value = value;
+		}
 	new_attribute->next = class->attributes;
 	class->attributes = new_attribute;
 	class->size++;

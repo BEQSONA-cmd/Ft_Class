@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 20:30:39 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/26 20:34:29 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:36:32 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 // funcs to add ft_strcmp and ft_strdup
 
-int ft_class_strlen(const char *s)
+int	ft_class_strlen(const char *s)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!s)
-        return (0);
-    while (s[i])
-        i++;
-    return (i);
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	return (i);
 }
 
 int	ft_class_strcmp(const char *s1, const char *s2)
 {
-    while (*s1 && *s2 && *s1 == *s2)
-    {
-        s1++;
-        s2++;
-    }
-    return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
 char	*ft_class_strdup(char *s1)

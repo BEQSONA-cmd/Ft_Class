@@ -15,15 +15,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 typedef struct s_class	t_class;
-
 
 typedef enum e_value_type
 {
 	INT,
 	STR,
-	FUNC
+	FUNC,
+	FUNC_WITH_ARGS
 }						t_value_type;
 
 typedef struct s_value
@@ -31,6 +32,7 @@ typedef struct s_value
 	int					int_value;
 	char				*string_value;
 	void				(*function_value)(void);
+	void				(*function_with_args_value)(void *);
 }						t_value;
 
 typedef struct s_attribute
@@ -45,20 +47,18 @@ typedef struct s_class
 {
 	t_attribute			*attributes;
 	size_t				size;
-	void				(*add_attribute)(t_class *class, char *name, t_value_type type, void *value);
+	void				(*attribute)(t_class *class, char *name, t_value_type type, ...);
 	void				*(*get_attribute)(t_class *class, char *name);
 
 }						t_class;
 
-int 					ft_class_strcmp(const char *s1, const char *s2);
-void					add_attribute(t_class *class, char *name,
-							t_value_type type, void *value);
+int						ft_class_strcmp(const char *s1, const char *s2);
+void					add_attribute(t_class *class, char *name, t_value_type type, ...);
 void					*get_attribute(t_class *class, char *name);
 void					call_function(t_class *class, char *name);
 char					*get_string(t_class *class, char *name);
 int						get_int(t_class *class, char *name);
 int						ft_class_strlen(const char *s);
 void					destroy_class(t_class *class);
-char 					*ft_class_strdup(char *s1);
-
+char					*ft_class_strdup(char *s1);
 t_class					*class(void);
