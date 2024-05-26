@@ -2,6 +2,7 @@ NAME = test
 
 SRC = ft_class.c\
 	ft_attributes.c\
+	ft_get.c\
 
 OBJ = $(SRC:.c=.o)
 
