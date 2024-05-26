@@ -18,14 +18,6 @@
 
 typedef struct s_class	t_class;
 
-void					add_attribute(t_class *class, char *name,
-							t_value_type type, void *value);
-void					*get_attribute(t_class *class, char *name);
-void					call_function(t_class *class, char *name);
-char					*get_string(t_class *class, char *name);
-int						get_int(t_class *class, char *name);
-void					destroy_class(t_class *class);
-t_class					*class(void);
 
 typedef enum e_value_type
 {
@@ -53,8 +45,20 @@ typedef struct s_class
 {
 	t_attribute			*attributes;
 	size_t				size;
-	void				(*add_attribute)(t_class *class, char *name,
-						t_value_type type, void *value);
+	void				(*add_attribute)(t_class *class, char *name, t_value_type type, void *value);
 	void				*(*get_attribute)(t_class *class, char *name);
 
 }						t_class;
+
+int 					ft_class_strcmp(const char *s1, const char *s2);
+void					add_attribute(t_class *class, char *name,
+							t_value_type type, void *value);
+void					*get_attribute(t_class *class, char *name);
+void					call_function(t_class *class, char *name);
+char					*get_string(t_class *class, char *name);
+int						get_int(t_class *class, char *name);
+int						ft_class_strlen(const char *s);
+void					destroy_class(t_class *class);
+char 					*ft_class_strdup(char *s1);
+
+t_class					*class(void);

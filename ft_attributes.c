@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:23:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/26 20:26:12 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:34:28 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	add_attribute(t_class *class, char *name, t_value_type type,
 	t_attribute	*new_attribute;
 
 	new_attribute = malloc(sizeof(t_attribute));
-	new_attribute->name = strdup(name);
+	new_attribute->name = ft_class_strdup(name);
 	new_attribute->type = type;
 	if (type == STR)
-		new_attribute->value.string_value = strdup((char *)value);
+		new_attribute->value.string_value = ft_class_strdup((char *)value);
 	else if (type == INT)
 		new_attribute->value.int_value = *(int *)value;
 	else if (type == FUNC)
@@ -70,7 +70,7 @@ void	*get_attribute(t_class *class, char *name)
 	attr = class->attributes;
 	while (attr != NULL)
 	{
-		if (strcmp(attr->name, name) == 0)
+		if (ft_class_strcmp(attr->name, name) == 0)
 			return (attr);
 		attr = attr->next;
 	}
