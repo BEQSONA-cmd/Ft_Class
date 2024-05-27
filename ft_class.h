@@ -10,12 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#ifndef FT_CLASS_H
+# define FT_CLASS_H
+
+# include <fcntl.h>
+# include <stdarg.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 typedef struct s_class	t_class;
 typedef void			(*t_functionpointer)(void *);
@@ -75,9 +78,11 @@ void					add_attribute_func(t_class *class, char *name,
 char					*get_string(t_class *class, char *name);
 void					call_func(t_class *class, char *name);
 int						get_int(t_class *class, char *name);
-void					**create_args(int num_args, ...);
+// void					**create_args(int num_args, ...);
 void					destroy_class(t_class *class);
 int						ft_class_arrlen(char **arr);
 char					*ft_class_strdup(char *s1);
 int						ft_class_strlen(char *s);
 t_class					*class(void);
+
+#endif
