@@ -11,28 +11,32 @@
 /* ************************************************************************** */
 
 #include <fcntl.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdarg.h>
 
 typedef struct s_class	t_class;
+typedef void			(*t_functionpointer)(void *);
 
 typedef enum e_value_type
 {
 	INT,
 	STR,
-	FUNC,
-	FUNC_WITH_ARGS
+	STR_ARR,
+	FUNC
 }						t_value_type;
 
 typedef struct s_value
 {
 	int					int_value;
 	char				*string_value;
-	void				(*function_value)(void);
-	void				(*function_with_args_value)(void *);
+	char				**string_arr_value;
+	t_functionpointer	function_value;
+	void				*args;
+	size_t				size;
+
 }						t_value;
 
 typedef struct s_attribute
@@ -47,18 +51,26 @@ typedef struct s_class
 {
 	t_attribute			*attributes;
 	size_t				size;
-	void				(*attribute)(t_class *class, char *name, t_value_type type, ...);
+	void				(*attribute)(t_class *class, char *name,
+			t_value_type type, void *value);
 	void				*(*get_attribute)(t_class *class, char *name);
 
 }						t_class;
 
-int						ft_class_strcmp(const char *s1, const char *s2);
-void					add_attribute(t_class *class, char *name, t_value_type type, ...);
+int						ft_class_strncmp(char *s1, char *s2, size_t n);
+void					add_args(t_attribute *attribute, void **args);
+void					add_attribute(t_class *class, char *name,
+							t_value_type type, void *value);
+char					**get_string_arr(t_class *class, char *name);
 void					*get_attribute(t_class *class, char *name);
-void					call_function(t_class *class, char *name);
+void					ft_class_memcpy(void *dst, void *src, size_t n);
+
 char					*get_string(t_class *class, char *name);
+void					call_func(t_class *class, char *name);
 int						get_int(t_class *class, char *name);
-int						ft_class_strlen(const char *s);
+void					**create_args(int num_args, ...);
 void					destroy_class(t_class *class);
+int						ft_class_arrlen(char **arr);
 char					*ft_class_strdup(char *s1);
+int						ft_class_strlen(char *s);
 t_class					*class(void);

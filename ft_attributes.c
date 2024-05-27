@@ -6,90 +6,78 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:23:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/26 20:56:09 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:36:02 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_class.h"
 
-t_class	*class(void)
+void	add_attribute_str(t_class *class, char *name, char *value)
 {
-	t_class	*new_class;
+	t_attribute	*new_attr;
 
-	new_class = malloc(sizeof(t_class));
-	new_class->attribute = add_attribute;
-	new_class->get_attribute = get_attribute;
-	new_class->attributes = NULL;
-	new_class->size = 0;
-	return (new_class);
+	new_attr = malloc(sizeof(t_attribute));
+	new_attr->name = ft_class_strdup(name);
+	new_attr->type = STR;
+	new_attr->value.string_value = ft_class_strdup(value);
+	new_attr->next = class->attributes;
+	class->attributes = new_attr;
 }
 
-void	destroy_class(t_class *class)
+void	add_attribute_str_arr(t_class *class, char *name, char **value)
 {
-	t_attribute	*attr;
-	t_attribute	*next;
+	t_attribute	*new_attr;
+	int			i;
 
-	attr = class->attributes;
-	while (attr != NULL)
+	new_attr = malloc(sizeof(t_attribute));
+	new_attr->name = ft_class_strdup(name);
+	new_attr->type = STR_ARR;
+	new_attr->value.string_arr_value = malloc(sizeof(char *)
+			* ft_class_arrlen(value) + 1);
+	i = 0;
+	while (value[i])
 	{
-		next = attr->next;
-		free(attr->name);
-		if (attr->type == STR)
-			free(attr->value.string_value);
-		free(attr);
-		attr = next;
+		new_attr->value.string_arr_value[i] = ft_class_strdup(value[i]);
+		i++;
 	}
-	free(class);
+	new_attr->value.string_arr_value[i] = NULL;
+	new_attr->next = class->attributes;
+	class->attributes = new_attr;
 }
 
-void	add_attribute(t_class *class, char *name, t_value_type type, ...)
+void	add_attribute_int(t_class *class, char *name, int *value)
 {
+	t_attribute	*new_attr;
 
-	va_list		args;
-	void		*value;
-	
-	va_start(args, type);
-	if (type == STR)
-		value = va_arg(args, char *);
-	else if (type == INT)
-		value = va_arg(args, int *);
-	else if (type == FUNC || type == FUNC_WITH_ARGS)
-		value = va_arg(args, void *);
-	va_end(args);
-	
-	t_attribute	*new_attribute;
-	
-	new_attribute = malloc(sizeof(t_attribute));
-	new_attribute->name = ft_class_strdup(name);
-	new_attribute->type = type;
-	if (type == STR)
-		new_attribute->value.string_value = ft_class_strdup((char *)value);
-	else if (type == INT)
-		new_attribute->value.int_value = *(int *)value;
-	else if (type == FUNC || type == FUNC_WITH_ARGS)
-		{
-			if (type == FUNC)
-				new_attribute->value.function_value = value;
-			else
-				new_attribute->value.function_with_args_value = value;
-		}
-	new_attribute->next = class->attributes;
-	class->attributes = new_attribute;
-	class->size++;
+	new_attr = malloc(sizeof(t_attribute));
+	new_attr->name = ft_class_strdup(name);
+	new_attr->type = INT;
+	new_attr->value.int_value = *value;
+	new_attr->next = class->attributes;
+	class->attributes = new_attr;
 }
 
-// for getting attributes from the class by name
-void	*get_attribute(t_class *class, char *name)
+void	add_attribute_func(t_class *class, char *name, void *value)
 {
-	t_attribute	*attr;
+	t_attribute	*new_attr;
 
-	attr = class->attributes;
-	while (attr != NULL)
-	{
-		if (ft_class_strcmp(attr->name, name) == 0)
-			return (attr);
-		attr = attr->next;
-	}
-	write(2, "Attribute not found\n", 21);
-	return (NULL);
+	new_attr = malloc(sizeof(t_attribute));
+	new_attr->name = ft_class_strdup(name);
+	new_attr->type = FUNC;
+	new_attr->value.function_value = value;
+	new_attr->next = class->attributes;
+	class->attributes = new_attr;
+}
+
+void	add_attribute(t_class *class, char *name, t_value_type type,
+		void *value)
+{
+	if (type == STR)
+		add_attribute_str(class, name, value);
+	else if (type == STR_ARR)
+		add_attribute_str_arr(class, name, value);
+	else if (type == INT)
+		add_attribute_int(class, name, value);
+	else if (type == FUNC)
+		add_attribute_func(class, name, value);
 }

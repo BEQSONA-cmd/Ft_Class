@@ -1,6 +1,7 @@
 NAME = test
 
-SRC = ft_class.c\
+SRC = main.c\
+	ft_class.c\
 	ft_attributes.c\
 	ft_get.c\
 	ft_utils.c\
