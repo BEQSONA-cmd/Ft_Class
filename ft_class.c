@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 20:16:45 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/27 20:56:47 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:50:46 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,28 @@ void	destroy_class(t_class *class)
 	free(class);
 }
 
-// for adding attributes to the class
-void	**create_args(int num_args, ...)
-{
-	va_list	ap;
-	void	*arg;
-	void	**args;
-	int		i;
+// // for adding attributes to the class
+// void	**create_args(int num_args, ...)
+// {
+// 	va_list	ap;
+// 	void	*arg;
+// 	void	**args;
+// 	int		i;
 
-	i = 0;
-	args = malloc((num_args + 1) * sizeof(void *));
-	va_start(ap, num_args);
-	while (i < num_args)
-	{
-		arg = va_arg(ap, void *);
-		args[i] = malloc(sizeof(void *));
-		ft_class_memcpy(args[i], &arg, sizeof(void *));
-		i++;
-	}
-	va_end(ap);
-	args[num_args] = NULL;
-	return (args);
-}
+// 	i = 0;
+// 	args = malloc((num_args + 1) * sizeof(void *));
+// 	va_start(ap, num_args);
+// 	while (i < num_args)
+// 	{
+// 		arg = va_arg(ap, void *);
+// 		args[i] = malloc(sizeof(void *));
+// 		ft_class_memcpy(args[i], &arg, sizeof(void *));
+// 		i++;
+// 	}
+// 	va_end(ap);
+// 	args[num_args] = NULL;
+// 	return (args);
+// }
 
 int	get_arg_size(void **args, size_t size[])
 {
@@ -118,7 +118,6 @@ void	add_args(t_attribute *attribute, void **args)
 		ft_class_memcpy((char *)attribute->value.args + size, args[i],
 			current_size);
 		size += current_size;
-		free(args[i]);
 		i++;
 	}
 }

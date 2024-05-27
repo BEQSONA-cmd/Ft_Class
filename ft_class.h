@@ -64,7 +64,14 @@ void					add_attribute(t_class *class, char *name,
 char					**get_string_arr(t_class *class, char *name);
 void					*get_attribute(t_class *class, char *name);
 void					ft_class_memcpy(void *dst, void *src, size_t n);
-
+void					add_attribute_str(t_class *class, char *name,
+							char *value);
+void					add_attribute_str_arr(t_class *class, char *name,
+							char **value);
+void					add_attribute_int(t_class *class, char *name,
+							int *value);
+void					add_attribute_func(t_class *class, char *name,
+							void *value);
 char					*get_string(t_class *class, char *name);
 void					call_func(t_class *class, char *name);
 int						get_int(t_class *class, char *name);

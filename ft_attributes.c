@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:23:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/27 19:36:02 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:44:00 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	add_attribute_str_arr(t_class *class, char *name, char **value)
 	t_attribute	*new_attr;
 	int			i;
 
+	i = 0;
 	new_attr = malloc(sizeof(t_attribute));
 	new_attr->name = ft_class_strdup(name);
 	new_attr->type = STR_ARR;
 	new_attr->value.string_arr_value = malloc(sizeof(char *)
-			* ft_class_arrlen(value) + 1);
-	i = 0;
+			* (ft_class_arrlen(value) + 1));
 	while (value[i])
 	{
 		new_attr->value.string_arr_value[i] = ft_class_strdup(value[i]);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 12:34:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/27 20:54:03 by btvildia         ###   ########.fr       */
+/*   Created: 2024/05/27 21:53:28 by btvildia          #+#    #+#             */
+/*   Updated: 2024/05/27 22:01:08 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,25 @@ void	say_hi_times(void *args)
 
 int	main(void)
 {
-	t_class	*new_class;
-	void	**args1;
-	void	**args2;
+	t_class	*cat;
+	int		i;
+	i = 3;
 
-	args1 = create_args(3, 2, "Hello", '!');
-	args2 = create_args(2, "Hi");
-	new_class = class();
-	new_class->attribute(new_class, "say_something", FUNC, &say_something);
-	add_args(new_class->get_attribute(new_class, "say_something"), args1);
-	call_func(new_class, "say_something");
-	new_class->attribute(new_class, "say_hi_times", FUNC, &say_hi_times);
-	add_args(new_class->get_attribute(new_class, "say_hi_times"), args2);
-	call_func(new_class, "say_hi_times");
-	destroy_class(new_class);
-	free(args1);
-	free(args2);
+	cat = class();
+	i = 0;
+	cat->attribute(cat, "say_something", FUNC, &say_something);	
+	cat->attribute(cat, "name", STR, "Kitty");
+	cat->attribute(cat, "age", INT, &(int){3});
+	cat->attribute(cat, "nicknames", STR_ARR, (char *[]){"kitty", "kitten",
+		"kittykat", NULL});
+	void *args[3] = {&(int){3}, (char *[]){"Hello", NULL}, &(char){'!'}};
+	add_args(get_attribute(cat, "say_something"), args);
+	while (get_string_arr(cat, "nicknames")[i])
+	{
+		printf("Nickname: %s\n", get_string_arr(cat, "nicknames")[i]);
+		i++;
+	}
+	call_func(cat, "say_something");
+	destroy_class(cat);
 	return (0);
 }
