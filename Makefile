@@ -6,22 +6,20 @@
 #    By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/27 22:05:48 by btvildia          #+#    #+#              #
-#    Updated: 2024/05/27 22:25:18 by btvildia         ###   ########.fr        #
+#    Updated: 2024/05/28 21:38:10 by btvildia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= ft_class.a
+NAME	= test
 HEADER	= ft_class.h
 OBJ	= $(SRC:.c=.o)
-SRC	= ft_utils.c ft_class.c ft_attributes.c ft_get.c
+SRC	= ft_utils.c ft_class.c ft_attributes.c ft_get.c main.c
 CC	 = gcc
-FLAGS	 = -g -c -Wall -Wextra -Werror
-LFLAGS	 = 
-
+FLAGS	 = -Wall -Wextra -Werror -g
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+	cc $(FLAGS) $(SRC) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
