@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 19:33:15 by btvildia          #+#    #+#             */
-/*   Updated: 2024/05/28 22:52:47 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:01:19 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	*get_attribute(t_class *class, char *name)
 			return (attr);
 		attr = attr->next;
 	}
+	write(2, "Attribute not found\n", 21);
 	return (NULL);
 }
 
@@ -33,30 +34,33 @@ int	get_int(t_class *class, char *name)
 	t_attribute	*attr;
 
 	attr = get_attribute(class, name);
-	if (attr)
+	if (attr != NULL && attr->type == INT)
 		return (attr->value.int_value);
+	write(2, "Attribute not found or not of type int\n", 39);
 	return (0);
 }
 
 // for getting string attributes from the class
-char	*get_string(t_class *class, char *name)
+char	*get_str(t_class *class, char *name)
 {
 	t_attribute	*attr;
 
 	attr = get_attribute(class, name);
-	if (attr)
+	if (attr != NULL && attr->type == STR)
 		return (attr->value.string_value);
+	write(2, "Attribute not found or not of type string\n", 42);
 	return (NULL);
 }
 
 // for getting string array attributes from the class
-char	**get_string_arr(t_class *class, char *name)
+char	**get_arr(t_class *class, char *name)
 {
 	t_attribute	*attr;
 
 	attr = get_attribute(class, name);
-	if (attr)
+	if (attr != NULL && attr->type == STR_ARR)
 		return (attr->value.string_arr_value);
+	write(2, "Attribute not found or not of type string array\n", 47);
 	return (NULL);
 }
 
@@ -70,7 +74,7 @@ void	call_func(t_class *class, char *name)
 	{
 		if (ft_class_strncmp(tmp->name, name, ft_class_strlen(name)) == 0)
 		{
-			if (tmp->value.function_value)
+			if (tmp->type == FUNC)
 			{
 				tmp->value.function_value(tmp->value.args);
 				free(tmp->value.args);
@@ -88,9 +92,9 @@ void	*attr(t_class *class, char *name)
 	void	*ret;
 	int		i;
 
-	s = get_string(class, name);
+	s = get_str(class, name);
 	i = get_int(class, name);
-	arr = get_string_arr(class, name);
+	arr = get_arr(class, name);
 	if (s)
 		ret = &s;
 	else if (i)
